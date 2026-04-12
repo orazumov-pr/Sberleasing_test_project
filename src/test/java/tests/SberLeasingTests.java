@@ -9,7 +9,7 @@ import utils.TestBase;
 
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
 
-public class SberLeasingTests extends TestBase  {
+public class SberLeasingTests extends TestBase {
 
     private MainPage mainPage = new MainPage();
 
@@ -34,7 +34,13 @@ public class SberLeasingTests extends TestBase  {
         step("Проверить видимость формы калькулятора", () -> {
             mainPage.checkCalculatorVisible();
         });
+    }
 
+    @Test
+    @DisplayName("Проверка ссылки на Telegram-канал")
+    @Tag("critical")
+    public void telegramLinkTest() {
+        mainPage.checkTelegramLink();
     }
 
 }

@@ -1,6 +1,5 @@
 package pages;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
@@ -12,7 +11,7 @@ public class MainPage {
     // Локаторы
     private final SelenideElement phoneLink = $(By.linkText("8 (800) 555-555-6"));
     private final SelenideElement calculatorSection = $x("//section[.//h2[contains(text(),'Рассчитайте лизинг')]]");
-
+    private final SelenideElement telegramLink = $("a[href*='https://t.me/sberleasing_official']");
 
     // Методы для взаимодействия
     public MainPage openPage() {
@@ -32,6 +31,18 @@ public class MainPage {
 
     public MainPage checkCalculatorVisible() {
         calculatorSection.shouldBe(visible);
+        return this;
+    }
+
+    public MainPage checkTelegramLink() {
+        telegramLink.scrollTo();
+        telegramLink.shouldBe(exist);
+
+        // Если элемент должен быть видим, пробуем его отобразить
+        if (!telegramLink.isDisplayed()) {
+            executeJavaScript("arguments[0].scrollIntoView(true);", telegramLink);
+        }
+
         return this;
     }
 
