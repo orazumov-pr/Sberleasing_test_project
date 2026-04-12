@@ -11,6 +11,7 @@ public class MainPage {
 
     // Локаторы
     private final SelenideElement phoneLink = $(By.linkText("8 (800) 555-555-6"));
+    private final SelenideElement calculatorSection = $x("//section[.//h2[contains(text(),'Рассчитайте лизинг')]]");
 
 
     // Методы для взаимодействия
@@ -26,6 +27,11 @@ public class MainPage {
 
     public MainPage checkPhoneNumber() {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
+        return this;
+    }
+
+    public MainPage checkCalculatorVisible() {
+        calculatorSection.shouldBe(visible);
         return this;
     }
 

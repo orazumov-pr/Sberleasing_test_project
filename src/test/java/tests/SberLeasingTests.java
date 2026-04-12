@@ -14,18 +14,27 @@ public class SberLeasingTests extends TestBase  {
     private MainPage mainPage = new MainPage();
 
     @Test
+    @Tag("smoke")
     @DisplayName("Проверка заголовка страницы")
     public void pageTitleTest() {
-        mainPage.openPage()
-                .checkPageTitle();
+        mainPage.checkPageTitle();
     }
 
     @Test
     @DisplayName("Проверка контактного телефона")
     @Tag("critical")
     public void phoneNumberTest() {
-        mainPage.openPage()
-                .checkPhoneNumber();
+        mainPage.checkPhoneNumber();
+    }
+
+    @Test
+    @DisplayName("Проверка наличия калькулятора лизинга")
+    @Tag("smoke")
+    public void calculatorVisibilityTest() {
+        step("Проверить видимость формы калькулятора", () -> {
+            mainPage.checkCalculatorVisible();
+        });
+
     }
 
 }
