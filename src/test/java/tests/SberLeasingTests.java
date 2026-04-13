@@ -43,4 +43,5 @@ public class SberLeasingTests extends TestBase {
         mainPage.checkTelegramLink();
     }
 
+
 }
