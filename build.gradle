@@ -1,23 +1,45 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '3.0.2'
 }
 
 version = '1.0-SNAPSHOT'
+
+allure {
+    report {
+        version.set("2.19.0")
+    }
+    adapter { // отвечает за появление папочки build/allure-results
+        aspectjWeaver.set(true) //обработка аннотации @Step
+        frameworks {
+            junit5 { //название фреймворка
+                adapterVersion.set("2.19.0") //версия интеграции фреймворка и Allure
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-    testImplementation 'com.codeborne:selenide:7.7.3'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
-    testImplementation 'org.slf4j:slf4j-simple:2.0.9'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter:5.10.0',
+            'com.codeborne:selenide:7.15.0',
+            'io.qameta.allure:allure-junit5:2.24.0',
+            'io.qameta.allure:allure-selenide:2.19.0',
+            'io.github.bonigarcia:webdrivermanager:5.9.2',
+            'org.slf4j:slf4j-simple:2.0.9',
+            'org.assertj:assertj-core:3.24.2'
+    )
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
     useJUnitPlatform()
+    systemProperties(System.getProperties())
 }
 
 tasks.withType(JavaCompile) {

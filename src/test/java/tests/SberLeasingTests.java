@@ -3,7 +3,6 @@ package tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
 import pages.MainPage;
 import utils.TestBase;
 
@@ -13,7 +12,6 @@ public class SberLeasingTests extends TestBase {
 
     private MainPage mainPage = new MainPage();
 
-
     @Test
     @Tag("smoke")
     @DisplayName("Проверка заголовка страницы")
@@ -22,7 +20,6 @@ public class SberLeasingTests extends TestBase {
             mainPage.checkPageTitle();
         });
     }
-
 
     @Test
     @DisplayName("Проверка контактного телефона")
