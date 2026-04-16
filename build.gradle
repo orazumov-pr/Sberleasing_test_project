@@ -5,6 +5,7 @@ plugins {
 
 version = '1.0-SNAPSHOT'
 
+
 allure {
     report {
         version.set("2.19.0")
@@ -37,11 +38,15 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
     systemProperties(System.getProperties())
-}
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+
 }

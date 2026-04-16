@@ -21,6 +21,8 @@ public class TestBase {
    @BeforeAll
     static void setUp() {
 
+       WebDriverManager.chromedriver().setup();
+
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.baseUrl = System.getProperty("baseUrl");  //https://www.sberleasing.ru
         Configuration.browser = System.getProperty("browser", "chrome");
@@ -58,7 +60,7 @@ public class TestBase {
         Attach.pageSource();
         Attach.browserConsoleLogs();
         Attach.addVideo();
-//      Attach.attachAsText("Some file", "Some content");
+        Attach.attachAsText("Some file", "Some content");
         closeWebDriver();
     }
 }
