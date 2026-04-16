@@ -4,13 +4,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
-import utils.TestBase;
-
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
 
 public class SberLeasingTests extends TestBase {
 
-    private MainPage mainPage = new MainPage();
+    private final MainPage mainPage = new MainPage();
 
     @Test
     @Tag("smoke")
