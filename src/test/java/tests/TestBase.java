@@ -18,18 +18,15 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class TestBase {
 
-   @BeforeAll
+    @BeforeAll
     static void setUp() {
 
-       WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().setup();
 
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.baseUrl = System.getProperty("baseUrl");  //https://www.sberleasing.ru
         Configuration.browser = System.getProperty("browser", "chrome");
         Configuration.browserVersion = System.getProperty("browserVersion", "128.0");
-        Configuration.timeout = 10000;
-        Configuration.pageLoadTimeout = 60000;
-        Configuration.headless = false;
 
         String loginSelenoid = System.getProperty("loginSelenoid");
         String passwordSelenoid = System.getProperty("passwordSelenoid");
@@ -42,6 +39,11 @@ public class TestBase {
         ));
         Configuration.browserCapabilities = capabilities;
         Configuration.remote = "https://" + loginSelenoid + ":" + passwordSelenoid + "@" + urlSelenoid;
+
+        Configuration.pageLoadStrategy = "eager";
+        Configuration.timeout = 10000;
+        Configuration.headless = false;
+
     }
 
     @BeforeEach
