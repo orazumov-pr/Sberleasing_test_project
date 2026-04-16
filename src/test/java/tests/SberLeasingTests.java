@@ -1,5 +1,6 @@
 package tests;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,8 @@ public class SberLeasingTests extends TestBase {
 
     @Test
     @DisplayName("Проверка ссылки на Telegram-канал")
-    @Tag("critical")
+    @Tag("smoke")
+    @Disabled("Ссылку убрали с сайта")
     public void telegramLinkTest() {
         mainPage.checkTelegramLink();
     }
