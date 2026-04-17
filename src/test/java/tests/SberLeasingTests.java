@@ -32,7 +32,6 @@ public class SberLeasingTests extends TestBase {
     @Test
     @DisplayName("Проверка ссылки на Telegram-канал")
     @Tag("smoke")
-    @Disabled("Ссылку убрали с сайта")
     public void telegramLinkTest() {
         mainPage.checkTelegramLink();
     }
