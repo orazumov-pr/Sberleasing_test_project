@@ -67,8 +67,8 @@
 В отчетах Allure для каждого теста прикреплен видео-скриншот прохождения теста.
 
 <p align="center">
-  <video src="images/video/selinoid_scr_video.gif" width="800" controls muted>
-  </video>
+  <img src="images/video/selinoid_scr_video.gif" width="800" controls muted>
+  </img>
 </p>
 
 ---
