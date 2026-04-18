@@ -21,40 +21,35 @@ public class MainPage {
 
     // Методы для взаимодействия
 
-    public MainPage checkPageTitle() {
+    public void checkPageTitle() {
         assert title().contains("СберЛизинг");
-        return this;
     }
 
-    public MainPage checkPhoneNumber() {
+    public void checkPhoneNumber() {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
-        return this;
     }
 
-    public MainPage checkTelegramLink() {
+    public void checkTelegramLink() {
         telegramLink.scrollTo();
         telegramLink.shouldBe(exist);
 
         if (!telegramLink.isDisplayed()) {
             executeJavaScript("arguments[0].scrollIntoView(true);", telegramLink);
         }
-        return this;
     }
 
-    public MainPage checkStepsCount(int expectedCount) {
+    public void checkStepsCount(int expectedCount) {
         stepItems.shouldHave(sizeLessThanOrEqual(expectedCount));
-        return this;
     }
 
-    public MainPage checkInnLink() {
+    public void checkInnLink() {
         innLink.shouldBe(visible).shouldHave(attribute("href"));
-        return this;
     }
 
     /**
      * Негативный тест: Попытка ввести некорректные данные в калькулятор
      */
-    public MainPage tryInvalidCalculatorInput() {
+    public void tryInvalidCalculatorInput() {
         step("Попытка ввести некорректные данные в калькулятор", () -> {
             SelenideElement costInput = $("input[name='cost']");
             if (costInput.exists()) {
@@ -66,7 +61,6 @@ public class MainPage {
                 assertThat(value).isNotEqualTo("-1000");
             }
         });
-        return this;
     }
 
 }
