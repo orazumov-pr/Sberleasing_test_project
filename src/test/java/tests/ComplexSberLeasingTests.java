@@ -35,5 +35,49 @@ public class ComplexSberLeasingTests extends TestBase {
                 .verifyFooterContacts()
                 .verifySocialLinksInFooter();
     }
+    @Test
+    @DisplayName("Комплексная проверка баннеров и акций")
+    @Tag("banners")
+    @Description("Проверяем баннеры: наличие, кликабельность, акции")
+    public void complexBannersTest() {
+        mainPage.openPage()
+                .verifyMainBannerExists()
+                .verifyAllBanners()
+                .verifyPromotionsOnBanners()
+                .verifyBannersClickable();
+    }
 
+    @Test
+    @DisplayName("Комплексная проверка контактной информации")
+    @Tag("contacts")
+    @Description("Проверяем контакты, форму заявки, обратную связь")
+    public void complexContactsTest() {
+        mainPage.openPage()
+                .verifyAllContactInfo()
+                .verifyFeedbackMechanism()
+                .verifyApplicationForm();
+    }
+
+    @Test
+    @DisplayName("Комплексная проверка производительности страницы")
+    @Tag("performance")
+    @Description("Проверяем время загрузки, изображения, адаптивность")
+    public void complexPerformanceTest() {
+        mainPage.openPage()
+                .verifyPageLoadTime()
+                .verifyAllImagesLoaded()
+                .verifyResponsiveness();
+    }
+
+    @Test
+    @DisplayName("Комплексная проверка SEO элементов")
+    @Tag("seo")
+    @Description("Проверяем мета-теги, заголовки, canonical ссылку")
+    public void complexSEOTest() {
+        mainPage.openPage()
+                .verifyMetaTags()
+                .verifyHeadings()
+                .verifyHeadingsStructure()
+                .verifyCanonicalLink();
+    }
 }

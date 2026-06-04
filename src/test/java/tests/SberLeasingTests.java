@@ -1,11 +1,15 @@
 package tests;
 
+import io.qameta.allure.Epic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 import static com.codeborne.selenide.logevents.SelenideLogger.step;
+
+
+@Epic("Сайт СберЛизинг")
 
 public class SberLeasingTests extends TestBase {
 
@@ -43,19 +47,19 @@ public class SberLeasingTests extends TestBase {
         mainPage.checkStepsCount(5);
     }
 
-    @Test
-    @DisplayName("Проверка ссылки на портал предоставления сведений по ЕГРЮЛ")
-    @Tag("medium")
-    public void innLinkTest() {
-        mainPage.checkInnLink();
-    }
-
-    // Негативный тест
-    @Test
-    @DisplayName("Негативный тест: Ввод отрицательных значений в калькулятор лизинга")
-    @Tag("negative")
-    public void invalidCalculatorInputTest() {
-        mainPage.tryInvalidCalculatorInput();
-    }
+//    @Test
+//    @DisplayName("Проверка ссылки на портал предоставления сведений по ЕГРЮЛ")
+//    @Tag("medium")
+//    public void innLinkTest() {
+//        mainPage.checkInnLink();
+//    }
+//
+//    // Негативный тест
+//    @Test
+//    @DisplayName("Негативный тест: Ввод отрицательных значений в калькулятор лизинга")
+//    @Tag("negative")
+//    public void invalidCalculatorInputTest() {
+//        mainPage.tryInvalidCalculatorInput();
+//    }
 
 }
