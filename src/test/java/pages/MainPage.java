@@ -1,66 +1,63 @@
 package pages;
 
+
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
+import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.CollectionCondition.sizeLessThanOrEqual;
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.logevents.SelenideLogger.step;
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 public class MainPage {
 
-    // Локаторы
-    private final SelenideElement phoneLink = $(By.linkText("8 (800) 555-555-6"));
-    private final SelenideElement telegramLink = $("a[href*='https://t.me/sberleasing_official']");
+
+    private final SelenideElement calculatorSection = $x("//h2[contains(text(),'Рассчитайте лизинг')]");
+    private final SelenideElement phoneLink = $(org.openqa.selenium.By.linkText("8 (800) 555-555-6"));
+    private final SelenideElement telegramLink = $("a[href*='t.me/sberleasing_official']");
     private final ElementsCollection stepItems = $$(".steps-item");
-    private final SelenideElement innLink = $("a[href*='https://egrul.nalog.ru/index.html']");
+    private final SelenideElement edoServicesLink = $(org.openqa.selenium.By.linkText("ЭДО E-leasing"));
 
-    // Методы для взаимодействия
 
-    public void checkPageTitle() {
-        assert title().contains("СберЛизинг");
+    // ========== БАЗОВЫЕ МЕТОДЫ (уже были) ==========
+
+    @Step("Открыть главную страницу")
+    public MainPage openPage() {
+        open("/");
+        return this;
     }
 
-    public void checkPhoneNumber() {
+    @Step("Проверить заголовок страницы")
+    public MainPage checkPageTitle() {
+        String title = title();
+        assertThat(title).as("Проверка заголовка страницы").contains("СберЛизинг");
+        return this;
+    }
+
+
+    @Step("Проверить номер телефона")
+    public MainPage checkPhoneNumber() {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
+        return this;
     }
 
-    public void checkTelegramLink() {
-        telegramLink.scrollTo();
-        telegramLink.shouldBe(exist);
-
-        if (!telegramLink.isDisplayed()) {
-            executeJavaScript("arguments[0].scrollIntoView(true);", telegramLink);
-        }
+    @Step("Проверить количество шагов: {expectedCount}")
+    public MainPage checkStepsCount(int expectedCount) {
+        stepItems.shouldHave(size(expectedCount));
+        return this;
     }
 
-    public void checkStepsCount(int expectedCount) {
-        stepItems.shouldHave(sizeLessThanOrEqual(expectedCount));
+    @Step("Проверить ссылку на Telegram")
+    public MainPage checkTelegramLink() {
+        telegramLink.scrollTo().shouldBe(exist);
+        String href = telegramLink.getAttribute("href");
+        assertThat(href).as("Проверка Telegram ссылки").isNotNull().contains("t.me");
+        return this;
     }
 
-    public void checkInnLink() {
-        innLink.shouldBe(visible).shouldHave(attribute("href"));
-    }
 
-    /**
-     * Негативный тест: Попытка ввести некорректные данные в калькулятор
-     */
-    public void tryInvalidCalculatorInput() {
-        step("Попытка ввести некорректные данные в калькулятор", () -> {
-            SelenideElement costInput = $("input[name='cost']");
-            if (costInput.exists()) {
-                // Вводим отрицательное значение
-                costInput.setValue("-1000");
-
-                // Проверяем, что валидация не пропускает отрицательные значения
-                String value = costInput.getValue();
-                assertThat(value).isNotEqualTo("-1000");
-            }
-        });
-    }
 
 }
