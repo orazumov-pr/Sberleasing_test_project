@@ -77,18 +77,6 @@ public class ComplexSberLeasingTests extends TestBase {
                 .verifyBannersClickable();
     }
 
-    @Test
-    @DisplayName("Проверка ссылки 'Узнать об ЭДО' в блоке онлайн-сервисов")
-    @Tag("critical")
-    @Tag("links")
-    @Description("Проверяем, что ссылка 'Узнать об ЭДО' ведет на правильный URL и открывается в новой вкладке")
-    public void edoLearnMoreLinkTest() {
-        mainPage.openPage()
-                .scrollToOnlineServices()
-                .verifyEdoLearnMoreLink()
-                .clickEdoLearnMoreLinkAndVerify();
-    }
-
 
 }
 

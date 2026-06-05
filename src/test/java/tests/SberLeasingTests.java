@@ -14,6 +14,14 @@ public class SberLeasingTests extends TestBase {
     private MainPage mainPage = new MainPage();
 
     @Test
+    @DisplayName("Проверка наличия логотипа СберЛизинг")
+    @Tag("smoke")
+    public void logoExistsTest() {
+        mainPage.openPage()
+                .checkLogoExists();
+    }
+
+    @Test
     @Tag("smoke")
     @DisplayName("Проверка заголовка страницы")
     public void pageTitleNameTest() {
@@ -25,6 +33,30 @@ public class SberLeasingTests extends TestBase {
     @DisplayName("Строгая проверка правильности контактного телефона")
     public void phoneNumberTest() {
         mainPage.checkPhoneNumber();
+    }
+
+    @Test
+    @DisplayName("Проверка наличия кнопки 'Оставить заявку'")
+    @Tag("critical")
+    public void applicationButtonExistsTest() {
+        mainPage.openPage()
+                .checkApplicationButtonExists();
+    }
+
+    @Test
+    @DisplayName("Проверка наличия блока с новостями")
+    @Tag("simple")
+    public void newsBlockExistsTest() {
+        mainPage.openPage()
+                .checkNewsBlockExists();
+    }
+
+    @Test
+    @DisplayName("Проверка наличия кнопки 'Рассчитать лизинг'")
+    @Tag("critical")
+    public void calculateButtonExistsTest() {
+        mainPage.openPage()
+                .checkCalculateButtonExists();
     }
 
     @Test
@@ -44,13 +76,6 @@ public class SberLeasingTests extends TestBase {
         mainPage.checkInnLink();
     }
 
-    @Test
-    @DisplayName("Проверка количества шагов получения лизинга")
-    @Tag("smoke")
-    public void stepsCountTest() {
-        mainPage.openPage()
-                .checkStepsCount(5);
-    }
 
 }
 

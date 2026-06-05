@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -37,6 +36,12 @@ public class MainPage {
         return this;
     }
 
+    @Step("Проверить наличие логотипа на странице")
+    public void checkLogoExists() {
+        SelenideElement logo = $(".header__logo, .logo, [alt='СберЛизинг'], [alt='Сбербанк Лизинг']");
+        logo.shouldBe(visible);
+    }
+
     @Step("Проверить заголовок страницы")
     public void checkPageTitle() {
         String title = title();
@@ -47,15 +52,28 @@ public class MainPage {
         innLink.shouldBe(visible).shouldHave(attribute("href"));
     }
 
-
     @Step("Проверить номер телефона")
     public void checkPhoneNumber() {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
     }
 
-    @Step("Проверить количество шагов: {expectedCount}")
-    public void checkStepsCount(int expectedCount) {
-        stepItems.shouldHave(size(expectedCount));
+    @Step("Проверить наличие кнопки 'Оставить заявку'")
+    public void checkApplicationButtonExists() {
+        SelenideElement applicationButton = $("button:contains('Оставить заявку'), a:contains('Оставить заявку'), .btn:contains('Заявка')");
+        applicationButton.shouldBe(visible);
+    }
+
+    @Step("Проверить наличие блока 'Новости лизинга'")
+    public void checkNewsBlockExists() {
+        SelenideElement newsBlock = $x("//*[contains(text(), 'Новости') or contains(text(), 'дайджест')]");
+        newsBlock.scrollTo();
+        newsBlock.shouldBe(visible);
+    }
+
+    @Step("Проверить наличие кнопки 'Рассчитать лизинг'")
+    public void checkCalculateButtonExists() {
+        SelenideElement calculateButton = $("button:contains('Рассчитать'), a:contains('Рассчитайте лизинг'), .calc-btn");
+        calculateButton.shouldBe(visible);
     }
 
     @Step("Проверить ссылку на Дзен")
@@ -94,7 +112,7 @@ public class MainPage {
     }
 
     @Step("Проверить наличие 5 шагов получения лизинга")
-    public MainPage checkStepsCount() {
+    public void checkStepsCount(int i) {
         SelenideElement stepsBlock = $("div:has(div:contains('5 простых шагов'))");
         stepsBlock.scrollTo();
         stepsBlock.shouldBe(visible);
@@ -105,7 +123,6 @@ public class MainPage {
         assertThat(stepsBlock.getText()).contains("Одобрение");
         assertThat(stepsBlock.getText()).contains("Выдача");
 
-        return this;
     }
 
     @Step("Проверить ссылку 'Узнать об ЭДО'")
