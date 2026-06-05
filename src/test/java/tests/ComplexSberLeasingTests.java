@@ -56,6 +56,40 @@ public class ComplexSberLeasingTests extends TestBase {
                 .verifySocialLinksInFooter();
     }
 
+    @Test
+    @DisplayName("Комплексная проверка SEO элементов")
+    @Tag("seo")
+    @Description("Проверяем мета-теги, заголовки, canonical ссылку")
+    public void complexSEOTest() {
+        mainPage.openPage()
+                .verifyMetaTags()
+                .verifyHeadings()
+                .verifyHeadingsStructure()
+                .verifyCanonicalLink();
+    }
+
+    @Test
+    public void complexBannersTest() {
+        mainPage.openPage()
+                .verifyMainBannerExists()
+                .verifyAllBanners()
+                .verifyPromotionsOnBanners()
+                .verifyBannersClickable();
+    }
+
+    @Test
+    @DisplayName("Проверка ссылки 'Узнать об ЭДО' в блоке онлайн-сервисов")
+    @Tag("critical")
+    @Tag("links")
+    @Description("Проверяем, что ссылка 'Узнать об ЭДО' ведет на правильный URL и открывается в новой вкладке")
+    public void edoLearnMoreLinkTest() {
+        mainPage.openPage()
+                .scrollToOnlineServices()
+                .verifyEdoLearnMoreLink()
+                .clickEdoLearnMoreLinkAndVerify();
+    }
+
+
 }
 
 

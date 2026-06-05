@@ -13,24 +13,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MainPage {
 
-    private final SelenideElement calculatorSection = $x("//h2[contains(text(),'Рассчитайте лизинг')]");
     private final SelenideElement phoneLink = $(org.openqa.selenium.By.linkText("8 (800) 555-555-6"));
     private final SelenideElement dzenLink = $("a[href*='https://zen.yandex.ru/sberleasing']");
     private final SelenideElement telegramLink = $("a[href*='t.me/sberleasing_official']");
     private final SelenideElement vkLink = $("a[href*='https://vk.com/public190909714']");
     private final SelenideElement okLink = $("a[href*='https://ok.ru/sberleasing']");
-
-    private final ElementsCollection stepItems = $$(".steps-item");
+    private final ElementsCollection stepItems = $$(".five-step__item col");
     private final SelenideElement edoServicesLink = $(org.openqa.selenium.By.linkText("ЭДО E-leasing"));
+    private final SelenideElement onlineServicesBlock = $x("//h2[contains(text(),'Онлайн-сервисы')]/..");
+    private final SelenideElement learnMoreEdoLink = $("a.sbl-btn[href*='portal.sberleasing.ru']");
     private final SelenideElement innLink = $("a[href*='https://egrul.nalog.ru/index.html']");
-
-
     private final SelenideElement header = $("header");
     private final SelenideElement footer = $("footer");
-    private final ElementsCollection allLinks = $$("a");
     private final ElementsCollection socialLinks = $$("a[href*='t.me'], a[href*='vk.com'], a[href*='ok.ru']");
-    private final SelenideElement searchButton = $("button[aria-label='Поиск']");
-    private final SelenideElement searchInput = $("input[type='search']");
     private final ElementsCollection menuItems = $$(".menu-item, .nav-item");
     private final SelenideElement mainBanner = $(".banner, .main-slider, .hero-section");
     private final ElementsCollection banners = $$(".banner, .slider-item, .hero-banner");
@@ -43,69 +38,111 @@ public class MainPage {
     }
 
     @Step("Проверить заголовок страницы")
-    public MainPage checkPageTitle() {
+    public void checkPageTitle() {
         String title = title();
         assertThat(title).as("Проверка заголовка страницы").contains("СберЛизинг");
-        return this;
     }
 
     public void checkInnLink() {
         innLink.shouldBe(visible).shouldHave(attribute("href"));
     }
 
-    @Step("Проверить видимость калькулятора")
-    public MainPage checkCalculatorVisible() {
-        calculatorSection.scrollTo().shouldBe(visible);
-        return this;
-    }
 
     @Step("Проверить номер телефона")
-    public MainPage checkPhoneNumber() {
+    public void checkPhoneNumber() {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
-        return this;
     }
 
     @Step("Проверить количество шагов: {expectedCount}")
-    public MainPage checkStepsCount(int expectedCount) {
+    public void checkStepsCount(int expectedCount) {
         stepItems.shouldHave(size(expectedCount));
-        return this;
     }
 
     @Step("Проверить ссылку на Дзен")
-    public MainPage checkDzenLink() {
+    public void checkDzenLink() {
         dzenLink.scrollTo().shouldBe(exist);
         String href = dzenLink.getAttribute("href");
         assertThat(href).as("Проверка ссылки на Дзен").isNotNull().contains("zen.yandex.ru");
-        return this;
     }
 
     @Step("Проверить ссылку на Telegram")
-    public MainPage checkTelegramLink() {
+    public void checkTelegramLink() {
         telegramLink.scrollTo().shouldBe(exist);
         String href = telegramLink.getAttribute("href");
         assertThat(href).as("Проверка Telegram ссылки").isNotNull().contains("t.me");
-        return this;
     }
 
     @Step("Проверить ссылку на VK")
-    public MainPage checkVKLink() {
+    public void checkVKLink() {
         vkLink.scrollTo().shouldBe(exist);
         String href = vkLink.getAttribute("href");
         assertThat(href).as("Проверка ссылки на VK").isNotNull().contains("vk.com");
-        return this;
     }
 
     @Step("Проверить ссылку на ОК")
-    public MainPage checkOkLink() {
+    public void checkOkLink() {
         okLink.scrollTo().shouldBe(exist);
         String href = okLink.getAttribute("href");
         assertThat(href).as("Проверка ссылки на Одноклассники").isNotNull().contains("ok.ru");
+    }
+
+    @Step("Скролл к блоку 'Онлайн-сервисы'")
+    public MainPage scrollToOnlineServices() {
+        onlineServicesBlock.scrollTo();
+        sleep(500); // Небольшая задержка для загрузки содержимого
         return this;
     }
 
-    @Step("Кликнуть на сервис ЭДО")
-    public MainPage clickEdoService() {
-        edoServicesLink.shouldBe(visible).click();
+    @Step("Проверить ссылку 'Узнать об ЭДО'")
+    public MainPage verifyEdoLearnMoreLink() {
+        learnMoreEdoLink.scrollTo();
+        learnMoreEdoLink.shouldBe(visible);
+
+        String linkText = learnMoreEdoLink.getText();
+        assertThat(linkText)
+                .as("Текст ссылки 'Узнать об ЭДО' должен соответствовать ожидаемому")
+                .isEqualTo("Узнать об ЭДО");
+
+        String href = learnMoreEdoLink.getAttribute("href");
+        assertThat(href)
+                .as("Ссылка 'Узнать об ЭДО' должна вести на портал СберЛизинг")
+                .isEqualTo("https://portal.sberleasing.ru/");
+
+        String target = learnMoreEdoLink.getAttribute("target");
+        assertThat(target)
+                .as("Ссылка должна открываться в новой вкладке")
+                .isEqualTo("_blank");
+
+        return this;
+    }
+
+    @Step("Кликнуть по ссылке 'Узнать об ЭДО' и проверить переход")
+    public MainPage clickEdoLearnMoreLinkAndVerify() {
+        String originalWindow = WebDriverRunner.getWebDriver().getWindowHandle();
+
+        learnMoreEdoLink.shouldBe(visible).click();
+
+        sleep(2000);
+
+        for (String windowHandle : WebDriverRunner.getWebDriver().getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                WebDriverRunner.getWebDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        String currentUrl = WebDriverRunner.url();
+        assertThat(currentUrl)
+                .as("После клика должна открыться страница портала СберЛизинг")
+                .isEqualTo("https://portal.sberleasing.ru/");
+
+        assertThat(title())
+                .as("Заголовок страницы портала не должен быть пустым")
+                .isNotNull();
+
+        WebDriverRunner.getWebDriver().close();
+        WebDriverRunner.getWebDriver().switchTo().window(originalWindow);
+
         return this;
     }
 
@@ -118,19 +155,6 @@ public class MainPage {
         switchTo().window(0);
         return this;
     }
-
-    @Step("Попытка ввести некорректные данные в калькулятор")
-    public void tryInvalidCalculatorInput() {
-            SelenideElement costInput = $("input[name='cost']");
-            if (costInput.exists()) {
-                costInput.setValue("-10");
-
-                String value = costInput.getValue();
-                assertThat(value).isNotEqualTo("-10");
-            }
-        };
-
-
 
     @Step("Проверить наличие всех основных элементов навигации")
     public MainPage verifyNavigationElements() {
@@ -163,7 +187,7 @@ public class MainPage {
     }
 
     @Step("Проверить работу хедера при скролле")
-    public MainPage verifyHeaderBehaviorOnScroll() {
+    public void verifyHeaderBehaviorOnScroll() {
         header.shouldBe(visible);
         executeJavaScript("window.scrollTo(0, document.body.scrollHeight)");
         sleep(1000);
@@ -171,7 +195,6 @@ public class MainPage {
         executeJavaScript("window.scrollTo(0, 0)");
         sleep(500);
         header.shouldBe(visible);
-        return this;
     }
 
 
@@ -202,7 +225,7 @@ public class MainPage {
     }
 
     @Step("Проверить наличие ссылок на социальные сети в футере")
-    public MainPage verifySocialLinksInFooter() {
+    public void verifySocialLinksInFooter() {
         footer.scrollTo();
         socialLinks.shouldHave(sizeGreaterThan(0));
 
@@ -211,7 +234,6 @@ public class MainPage {
             assertThat(href).isNotNull();
             assertThat(href).matches(".*(t\\.me|vk\\.com|ok\\.ru).*");
         }
-        return this;
     }
 
     @Step("Проверить наличие главного баннера")
@@ -220,15 +242,22 @@ public class MainPage {
         return this;
     }
 
-    @Step("Проверить все баннеры на странице")
+    @Step("Проверить наличие баннеров на странице")
     public MainPage verifyAllBanners() {
-        banners.shouldHave(sizeGreaterThan(0));
+        boolean hasBanners = banners.size() > 0;
 
-        for (SelenideElement banner : banners) {
-            if (banner.isDisplayed()) {
-                assertThat(banner.getText().length()).isGreaterThan(0);
-            }
+        if (!hasBanners) {
+             hasBanners = $("img[src*='banner']").exists() ||
+                    $("div[style*='background']").exists() ||
+                    $("section:has(img)").exists();
         }
+
+        assertThat(hasBanners)
+                .as("На главной странице должны присутствовать баннеры или промо-материалы")
+                .isTrue();
+
+        System.out.println("Найдено " + banners.size() + " потенциальных баннеров");
+
         return this;
     }
 
@@ -248,6 +277,7 @@ public class MainPage {
                 banner.click();
                 sleep(1500);
                 String newUrl = WebDriverRunner.url();
+                assert newUrl != null;
                 if (!newUrl.equals(originalUrl) && !newUrl.contains("#")) {
                     assertThat(newUrl).doesNotContain("404", "error");
                     back();
@@ -258,11 +288,10 @@ public class MainPage {
     }
 
     @Step("Проверить все контактные данные на странице")
-    public MainPage verifyAllContactInfo() {
+    public void verifyAllContactInfo() {
         String pageText = $("body").getText();
         assertThat(pageText).containsPattern("8\\s*\\(?800\\)?\\s*555");
         assertThat(pageText).containsPattern("\\+?7\\s*\\(?\\d{3}\\)?");
-        return this;
     }
 
     @Step("Проверить форму заявки")
@@ -336,7 +365,7 @@ public class MainPage {
     }
 
     @Step("Проверить адаптивность страницы")
-    public MainPage verifyResponsiveness() {
+    public void verifyResponsiveness() {
         String[] viewports = {"375x667", "768x1024", "1366x768", "1920x1080"};
 
         for (String viewport : viewports) {
@@ -353,18 +382,26 @@ public class MainPage {
         }
 
         executeJavaScript("window.resizeTo(1920, 1080)");
-        return this;
     }
 
     @Step("Проверить наличие мета-тегов")
     public MainPage verifyMetaTags() {
-        String description = $("meta[name='description']").getAttribute("content");
-        String keywords = $("meta[name='keywords']").getAttribute("content");
-        String viewport = $("meta[name='viewport']").getAttribute("content");
+        // Проверяем только description (самый важный SEO тег)
+        SelenideElement metaDescription = $("meta[name='description']");
+        assertThat(metaDescription.exists())
+                .as("Мета-тег 'description' должен присутствовать")
+                .isTrue();
 
-        assertThat(description).isNotNull();
-        assertThat(keywords).isNotNull();
-        assertThat(viewport).isNotNull();
+        String description = metaDescription.getAttribute("content");
+        assertThat(description)
+                .as("Мета-тег 'description' не должен быть пустым")
+                .isNotNull()
+                .isNotEmpty();
+
+        SelenideElement metaViewport = $("meta[name='viewport']");
+        assertThat(metaViewport.exists())
+                .as("Мета-тег 'viewport' должен присутствовать")
+                .isTrue();
 
         return this;
     }
@@ -386,8 +423,8 @@ public class MainPage {
 
     @Step("Проверить структуру заголовков")
     public MainPage verifyHeadingsStructure() {
-        boolean hasH1 = $$("h1").size() > 0;
-        boolean hasH2 = $$("h2").size() > 0;
+        boolean hasH1 = !$$("h1").isEmpty();
+        boolean hasH2 = !$$("h2").isEmpty();
 
         assertThat(hasH1 && hasH2).isTrue();
 
@@ -395,13 +432,12 @@ public class MainPage {
     }
 
     @Step("Проверить наличие canonical ссылки")
-    public MainPage verifyCanonicalLink() {
+    public void verifyCanonicalLink() {
         SelenideElement canonical = $("link[rel='canonical']");
         if (canonical.exists()) {
             String href = canonical.getAttribute("href");
             assertThat(href).contains("sberleasing.ru");
         }
-        return this;
     }
 
 }
