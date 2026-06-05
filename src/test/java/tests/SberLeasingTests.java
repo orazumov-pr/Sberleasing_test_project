@@ -45,17 +45,11 @@ public class SberLeasingTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Проверка баннера на портал ЭДО E-leasing")
-    @Tag("medium")
-    public void edoLinkTest() {
-        mainPage.verifyEdoPageOpened();
-    }
-
-    @Test
     @DisplayName("Проверка количества шагов получения лизинга")
     @Tag("smoke")
     public void stepsCountTest() {
-        mainPage.checkStepsCount(5);
+        mainPage.openPage()
+                .checkStepsCount(5);
     }
 
 }

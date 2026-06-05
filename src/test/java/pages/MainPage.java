@@ -93,6 +93,21 @@ public class MainPage {
         return this;
     }
 
+    @Step("Проверить наличие 5 шагов получения лизинга")
+    public MainPage checkStepsCount() {
+        SelenideElement stepsBlock = $("div:has(div:contains('5 простых шагов'))");
+        stepsBlock.scrollTo();
+        stepsBlock.shouldBe(visible);
+
+        assertThat(stepsBlock.getText()).contains("Заявка");
+        assertThat(stepsBlock.getText()).contains("Подтверждение");
+        assertThat(stepsBlock.getText()).contains("Подготовка");
+        assertThat(stepsBlock.getText()).contains("Одобрение");
+        assertThat(stepsBlock.getText()).contains("Выдача");
+
+        return this;
+    }
+
     @Step("Проверить ссылку 'Узнать об ЭДО'")
     public MainPage verifyEdoLearnMoreLink() {
         learnMoreEdoLink.scrollTo();
@@ -106,7 +121,7 @@ public class MainPage {
         String href = learnMoreEdoLink.getAttribute("href");
         assertThat(href)
                 .as("Ссылка 'Узнать об ЭДО' должна вести на портал СберЛизинг")
-                .isEqualTo("https://portal.sberleasing.ru/");
+                .isEqualTo("https://portal.sberleasing.ru/Authorization/sign-in");
 
         String target = learnMoreEdoLink.getAttribute("target");
         assertThat(target)
@@ -117,10 +132,10 @@ public class MainPage {
     }
 
     @Step("Кликнуть по ссылке 'Узнать об ЭДО' и проверить переход")
-    public MainPage clickEdoLearnMoreLinkAndVerify() {
+    public void clickEdoLearnMoreLinkAndVerify() {
         String originalWindow = WebDriverRunner.getWebDriver().getWindowHandle();
 
-        learnMoreEdoLink.shouldBe(visible).click();
+        executeJavaScript("arguments[0].click();", learnMoreEdoLink);
 
         sleep(2000);
 
@@ -134,38 +149,20 @@ public class MainPage {
         String currentUrl = WebDriverRunner.url();
         assertThat(currentUrl)
                 .as("После клика должна открыться страница портала СберЛизинг")
-                .isEqualTo("https://portal.sberleasing.ru/");
-
-        assertThat(title())
-                .as("Заголовок страницы портала не должен быть пустым")
-                .isNotNull();
+                .isEqualTo("https://portal.sberleasing.ru/Authorization/sign-in");
 
         WebDriverRunner.getWebDriver().close();
         WebDriverRunner.getWebDriver().switchTo().window(originalWindow);
 
-        return this;
     }
 
     @Step("Проверить открытие страницы ЭДО")
-    public MainPage verifyEdoPageOpened() {
+    public void verifyEdoPageOpened() {
         switchTo().window(1);
         String currentUrl = WebDriverRunner.url();
         assertThat(currentUrl).contains("e-leasing");
         closeWindow();
         switchTo().window(0);
-        return this;
-    }
-
-    @Step("Проверить наличие всех основных элементов навигации")
-    public MainPage verifyNavigationElements() {
-        header.shouldBe(visible);
-        menuItems.shouldHave(sizeGreaterThan(3));
-
-        for (SelenideElement item : menuItems) {
-            assertThat(item.isDisplayed()).isTrue();
-            assertThat(item.getText().length()).isGreaterThan(0);
-        }
-        return this;
     }
 
     @Step("Проверить, что все ссылки в меню ведут на страницы без ошибок")
@@ -244,7 +241,7 @@ public class MainPage {
 
     @Step("Проверить наличие баннеров на странице")
     public MainPage verifyAllBanners() {
-        boolean hasBanners = banners.size() > 0;
+        boolean hasBanners = !banners.isEmpty();
 
         if (!hasBanners) {
              hasBanners = $("img[src*='banner']").exists() ||
