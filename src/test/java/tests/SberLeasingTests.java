@@ -34,10 +34,13 @@ public class SberLeasingTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Проверка ссылки на Telegram-канал")
+    @DisplayName("Проверка ссылок на Социальные сети")
     @Tag("smoke")
-    public void telegramLinkTest() {
+    public void socialLinkTest() {
+        mainPage.checkDzenLink();
         mainPage.checkTelegramLink();
+        mainPage.checkVKLink();
+        mainPage.checkOkLink();
     }
 
     @Test

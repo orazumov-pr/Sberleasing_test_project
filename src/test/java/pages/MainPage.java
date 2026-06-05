@@ -1,13 +1,9 @@
 package pages;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
-import org.openqa.selenium.Keys;
-
-import java.time.Duration;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
@@ -19,7 +15,11 @@ public class MainPage {
 
     private final SelenideElement calculatorSection = $x("//h2[contains(text(),'Рассчитайте лизинг')]");
     private final SelenideElement phoneLink = $(org.openqa.selenium.By.linkText("8 (800) 555-555-6"));
+    private final SelenideElement dzenLink = $("a[href*='https://zen.yandex.ru/sberleasing']");
     private final SelenideElement telegramLink = $("a[href*='t.me/sberleasing_official']");
+    private final SelenideElement vkLink = $("a[href*='https://vk.com/public190909714']");
+    private final SelenideElement okLink = $("a[href*='https://ok.ru/sberleasing']");
+
     private final ElementsCollection stepItems = $$(".steps-item");
     private final SelenideElement edoServicesLink = $(org.openqa.selenium.By.linkText("ЭДО E-leasing"));
 
@@ -66,11 +66,35 @@ public class MainPage {
         return this;
     }
 
+    @Step("Проверить ссылку на Дзен")
+    public MainPage checkDzenLink() {
+        dzenLink.scrollTo().shouldBe(exist);
+        String href = dzenLink.getAttribute("href");
+        assertThat(href).as("Проверка ссылки на Дзен").isNotNull().contains("zen.yandex.ru");
+        return this;
+    }
+
     @Step("Проверить ссылку на Telegram")
     public MainPage checkTelegramLink() {
         telegramLink.scrollTo().shouldBe(exist);
         String href = telegramLink.getAttribute("href");
         assertThat(href).as("Проверка Telegram ссылки").isNotNull().contains("t.me");
+        return this;
+    }
+
+    @Step("Проверить ссылку на VK")
+    public MainPage checkVKLink() {
+        vkLink.scrollTo().shouldBe(exist);
+        String href = vkLink.getAttribute("href");
+        assertThat(href).as("Проверка ссылки на VK").isNotNull().contains("vk.com");
+        return this;
+    }
+
+    @Step("Проверить ссылку на ОК")
+    public MainPage checkOkLink() {
+        okLink.scrollTo().shouldBe(exist);
+        String href = okLink.getAttribute("href");
+        assertThat(href).as("Проверка ссылки на Одноклассники").isNotNull().contains("ok.ru");
         return this;
     }
 
@@ -200,7 +224,7 @@ public class MainPage {
     }
 
     @Step("Проверить, что баннеры кликабельны и ведут на целевые страницы")
-    public MainPage verifyBannersClickable() {
+    public void verifyBannersClickable() {
         for (int i = 0; i < Math.min(banners.size(), 3); i++) {
             SelenideElement banner = banners.get(i);
             if (banner.isDisplayed() && banner.isEnabled()) {
@@ -215,7 +239,6 @@ public class MainPage {
                 }
             }
         }
-        return this;
     }
 
     @Step("Проверить все контактные данные на странице")
