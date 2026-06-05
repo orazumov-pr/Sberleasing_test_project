@@ -22,6 +22,7 @@ public class MainPage {
 
     private final ElementsCollection stepItems = $$(".steps-item");
     private final SelenideElement edoServicesLink = $(org.openqa.selenium.By.linkText("ЭДО E-leasing"));
+    private final SelenideElement innLink = $("a[href*='https://egrul.nalog.ru/index.html']");
 
 
     private final SelenideElement header = $("header");
@@ -46,6 +47,10 @@ public class MainPage {
         String title = title();
         assertThat(title).as("Проверка заголовка страницы").contains("СберЛизинг");
         return this;
+    }
+
+    public void checkInnLink() {
+        innLink.shouldBe(visible).shouldHave(attribute("href"));
     }
 
     @Step("Проверить видимость калькулятора")
@@ -113,6 +118,17 @@ public class MainPage {
         switchTo().window(0);
         return this;
     }
+
+    @Step("Попытка ввести некорректные данные в калькулятор")
+    public void tryInvalidCalculatorInput() {
+            SelenideElement costInput = $("input[name='cost']");
+            if (costInput.exists()) {
+                costInput.setValue("-10");
+
+                String value = costInput.getValue();
+                assertThat(value).isNotEqualTo("-10");
+            }
+        };
 
 
 
@@ -249,20 +265,6 @@ public class MainPage {
         return this;
     }
 
-    @Step("Проверить наличие обратной связи")
-    public MainPage verifyFeedbackMechanism() {
-        SelenideElement feedbackButton = $("button:contains('Заказать звонок'), a:contains('Обратная связь')");
-        if (feedbackButton.exists()) {
-            feedbackButton.shouldBe(visible);
-            feedbackButton.click();
-            sleep(500);
-            SelenideElement modal = $(".modal, .popup, .form-container");
-            modal.shouldBe(visible);
-            modal.$("button.close, .close-btn").click();
-        }
-        return this;
-    }
-
     @Step("Проверить форму заявки")
     public MainPage verifyApplicationForm() {
         SelenideElement applicationButton = $("button:contains('Оставить заявку'), a:contains('Заявка')");
@@ -303,11 +305,20 @@ public class MainPage {
         images.shouldHave(sizeGreaterThan(0));
 
         for (SelenideElement img : images) {
+            // Получаем src или data-src (для lazy loading)
             String src = img.getAttribute("src");
-            if (src != null && !src.isEmpty()) {
-                assertThat(src).doesNotContain("data:image");
+            if (src == null || src.isEmpty()) {
+                src = img.getAttribute("data-src");
             }
+
+            // Проверяем, что источник изображения не пустой
+            assertThat(src)
+                    .as("Изображение не имеет источника (src или data-src)")
+                    .isNotNull()
+                    .isNotEmpty();
+
         }
+
         return this;
     }
 

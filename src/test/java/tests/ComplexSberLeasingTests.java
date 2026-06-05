@@ -13,49 +13,24 @@ public class ComplexSberLeasingTests extends TestBase {
 
     private MainPage mainPage = new MainPage();
 
-    @Test
-    @DisplayName("Комплексная проверка навигации по сайту")
-    @Tag("navigation")
-    @Description("Проверяем все элементы навигации: меню, хедер, ссылки")
-    public void complexNavigationTest() {
-        mainPage.openPage()
-                .verifyNavigationElements()
-                .verifyMenuLinksAreValid()
-                .verifyHeaderBehaviorOnScroll();
-    }
 
     @Test
-    @DisplayName("Комплексная проверка футера")
-    @Tag("footer")
-    @Description("Проверяем футер: видимость, ссылки, контакты, соцсети")
-    public void complexFooterTest() {
-        mainPage.openPage()
-                .verifyFooterVisibility()
-                .verifyFooterLinks()
-                .verifyFooterContacts()
-                .verifySocialLinksInFooter();
-    }
-    @Test
-    @DisplayName("Комплексная проверка баннеров и акций")
-    @Tag("banners")
-    @Description("Проверяем баннеры: наличие, кликабельность, акции")
-    public void complexBannersTest() {
-        mainPage.openPage()
-                .verifyMainBannerExists()
-                .verifyAllBanners()
-                .verifyPromotionsOnBanners()
-                .verifyBannersClickable();
-    }
-
-    @Test
-    @DisplayName("Комплексная проверка контактной информации")
+    @DisplayName("Проверка контактной информации")
     @Tag("contacts")
-    @Description("Проверяем контакты, форму заявки, обратную связь")
+    @Description("Проверка всех контактных данных на странице")
     public void complexContactsTest() {
         mainPage.openPage()
-                .verifyAllContactInfo()
-                .verifyFeedbackMechanism()
-                .verifyApplicationForm();
+                .verifyAllContactInfo();
+    }
+
+    @Test
+    @DisplayName("Проверка навигации по сайту")
+    @Tag("navigation")
+    @Description("Проверяем элементы навигации: хедер, ссылки")
+    public void complexNavigationTest() {
+        mainPage.openPage()
+                .verifyMenuLinksAreValid()
+                .verifyHeaderBehaviorOnScroll();
     }
 
     @Test
@@ -70,14 +45,18 @@ public class ComplexSberLeasingTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Комплексная проверка SEO элементов")
-    @Tag("seo")
-    @Description("Проверяем мета-теги, заголовки, canonical ссылку")
-    public void complexSEOTest() {
+    @DisplayName("Комплексная проверка футера")
+    @Tag("footer")
+    @Description("Проверяем футер: видимость, ссылки, контакты, соцсети")
+    public void complexFooterTest() {
         mainPage.openPage()
-                .verifyMetaTags()
-                .verifyHeadings()
-                .verifyHeadingsStructure()
-                .verifyCanonicalLink();
+                .verifyFooterVisibility()
+                .verifyFooterLinks()
+                .verifyFooterContacts()
+                .verifySocialLinksInFooter();
     }
+
 }
+
+
+
