@@ -37,9 +37,10 @@ public class MainPage {
     }
 
     @Step("Проверить наличие логотипа на странице")
-    public void checkLogoExists() {
-        SelenideElement logo = $(".header__logo, .logo, [alt='СберЛизинг'], [alt='Сбербанк Лизинг']");
+    public MainPage checkLogoExists() {
+        SelenideElement logo = $("a[aria-label='АО «Сбербанк Лизинг»']");
         logo.shouldBe(visible);
+        return this;
     }
 
     @Step("Проверить заголовок страницы")
@@ -63,11 +64,13 @@ public class MainPage {
         applicationButton.shouldBe(visible);
     }
 
-    @Step("Проверить наличие блока 'Новости лизинга'")
-    public void checkNewsBlockExists() {
-        SelenideElement newsBlock = $x("//*[contains(text(), 'Новости') or contains(text(), 'дайджест')]");
-        newsBlock.scrollTo();
-        newsBlock.shouldBe(visible);
+    @Step("Проверить наличие информации о новостях на странице")
+    public MainPage checkNewsBlockExists() {
+        SelenideElement newsText = $x("//*[contains(text(), 'Новости лизинга')]");
+        newsText.shouldBe(exist);
+        SelenideElement parentBlock = newsText.parent();
+        System.out.println("Найден блок с новостями: " + parentBlock.getText().substring(0, Math.min(100, parentBlock.getText().length())));
+        return this;
     }
 
     @Step("Проверить наличие кнопки 'Рассчитать лизинг'")

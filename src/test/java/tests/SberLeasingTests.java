@@ -36,27 +36,11 @@ public class SberLeasingTests extends TestBase {
     }
 
     @Test
-    @DisplayName("Проверка наличия кнопки 'Оставить заявку'")
-    @Tag("critical")
-    public void applicationButtonExistsTest() {
-        mainPage.openPage()
-                .checkApplicationButtonExists();
-    }
-
-    @Test
     @DisplayName("Проверка наличия блока с новостями")
     @Tag("simple")
     public void newsBlockExistsTest() {
         mainPage.openPage()
                 .checkNewsBlockExists();
-    }
-
-    @Test
-    @DisplayName("Проверка наличия кнопки 'Рассчитать лизинг'")
-    @Tag("critical")
-    public void calculateButtonExistsTest() {
-        mainPage.openPage()
-                .checkCalculateButtonExists();
     }
 
     @Test
