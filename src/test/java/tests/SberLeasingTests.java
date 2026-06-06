@@ -7,29 +7,29 @@ import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 
-@Epic("Сайт СберЛизинг")
-@Feature("Комплексные тесты главной страницы")
+@Epic("Сайт СберЛизинг - Главная страница")
+@Feature("Точные проверки параметров на главной странице")
 public class SberLeasingTests extends TestBase {
 
     private MainPage mainPage = new MainPage();
 
     @Test
     @DisplayName("Проверка наличия логотипа СберЛизинг")
-    @Tag("smoke")
+    @Tag("seo")
     public void logoExistsTest() {
         mainPage.openPage()
                 .checkLogoExists();
     }
 
     @Test
-    @Tag("smoke")
+    @Tag("seo")
     @DisplayName("Проверка заголовка страницы")
     public void pageTitleNameTest() {
         mainPage.checkPageTitle();
     }
 
     @Test
-    @Tag("critical")
+    @Tag("contacts")
     @DisplayName("Строгая проверка правильности контактного телефона")
     public void phoneNumberTest() {
         mainPage.checkPhoneNumber();
@@ -37,7 +37,7 @@ public class SberLeasingTests extends TestBase {
 
     @Test
     @DisplayName("Проверка наличия блока с новостями")
-    @Tag("simple")
+    @Tag("navigation")
     public void newsBlockExistsTest() {
         mainPage.openPage()
                 .checkNewsBlockExists();
@@ -45,7 +45,7 @@ public class SberLeasingTests extends TestBase {
 
     @Test
     @DisplayName("Проверка ссылок на Социальные сети")
-    @Tag("smoke")
+    @Tag("contacts")
     public void socialLinkTest() {
         mainPage.checkDzenLink();
         mainPage.checkTelegramLink();
@@ -55,12 +55,10 @@ public class SberLeasingTests extends TestBase {
 
     @Test
     @DisplayName("Проверка ссылки на портал предоставления сведений по ЕГРЮЛ")
-    @Tag("medium")
+    @Tag("navigation")
     public void innLinkTest() {
         mainPage.checkInnLink();
     }
-
-
 }
 
 

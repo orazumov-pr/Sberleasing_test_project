@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 
-@Epic("Сайт СберЛизинг")
-@Feature("Комплексные тесты главной страницы")
+@Epic("Сайт СберЛизинг - Главная страница")
+@Feature("Комплексные проверки апарметров на главной странице")
 public class ComplexSberLeasingTests extends TestBase {
 
-    private MainPage mainPage = new MainPage();
+    private final MainPage mainPage = new MainPage();
 
 
     @Test
@@ -69,6 +69,9 @@ public class ComplexSberLeasingTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Комплексная проверка баннеров и акций")
+    @Tag("banners")
+    @Description("Проверяем баннеры: наличие, кликабельность, акции")
     public void complexBannersTest() {
         mainPage.openPage()
                 .verifyMainBannerExists()
@@ -76,8 +79,6 @@ public class ComplexSberLeasingTests extends TestBase {
                 .verifyPromotionsOnBanners()
                 .verifyBannersClickable();
     }
-
-
 }
 
 
