@@ -9,7 +9,7 @@ import pages.MainPage;
 
 public class SberLeasingTests extends TestBase {
 
-    private MainPage mainPage = new MainPage();
+    private final MainPage mainPage = new MainPage();
 
     @Test
     @DisplayName("Проверка наличия логотипа СберЛизинг")
