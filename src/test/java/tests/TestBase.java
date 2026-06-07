@@ -7,10 +7,9 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
 import java.util.Map;
-
 import static com.codeborne.selenide.Selenide.open;
+
 
 public class TestBase {
 
@@ -47,7 +46,6 @@ public class TestBase {
         Configuration.headless = false;
 
     }
-
 
     @BeforeEach
     public void beforeEach() {

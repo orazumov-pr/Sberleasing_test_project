@@ -17,8 +17,6 @@ public class MainPage {
     private final SelenideElement telegramLink = $("a[href*='t.me/sberleasing_official']");
     private final SelenideElement vkLink = $("a[href*='https://vk.com/public190909714']");
     private final SelenideElement okLink = $("a[href*='https://ok.ru/sberleasing']");
-    private final ElementsCollection stepItems = $$(".five-step__item col");
-    private final SelenideElement edoServicesLink = $(org.openqa.selenium.By.linkText("ЭДО E-leasing"));
     private final SelenideElement onlineServicesBlock = $x("//h2[contains(text(),'Онлайн-сервисы')]/..");
     private final SelenideElement learnMoreEdoLink = $("a.sbl-btn[href*='portal.sberleasing.ru']");
     private final SelenideElement innLink = $("a[href*='https://egrul.nalog.ru/index.html']");
@@ -37,10 +35,9 @@ public class MainPage {
     }
 
     @Step("Проверить наличие логотипа на странице")
-    public MainPage checkLogoExists() {
+    public void checkLogoExists() {
         SelenideElement logo = $("a[aria-label='АО «Сбербанк Лизинг»']");
         logo.shouldBe(visible);
-        return this;
     }
 
     @Step("Проверить заголовок страницы")
@@ -58,25 +55,12 @@ public class MainPage {
         phoneLink.shouldBe(visible).shouldHave(text("8 (800) 555-555-6"));
     }
 
-    @Step("Проверить наличие кнопки 'Оставить заявку'")
-    public void checkApplicationButtonExists() {
-        SelenideElement applicationButton = $("button:contains('Оставить заявку'), a:contains('Оставить заявку'), .btn:contains('Заявка')");
-        applicationButton.shouldBe(visible);
-    }
-
     @Step("Проверить наличие информации о новостях на странице")
-    public MainPage checkNewsBlockExists() {
+    public void checkNewsBlockExists() {
         SelenideElement newsText = $x("//*[contains(text(), 'Новости лизинга')]");
         newsText.shouldBe(exist);
         SelenideElement parentBlock = newsText.parent();
         System.out.println("Найден блок с новостями: " + parentBlock.getText().substring(0, Math.min(100, parentBlock.getText().length())));
-        return this;
-    }
-
-    @Step("Проверить наличие кнопки 'Рассчитать лизинг'")
-    public void checkCalculateButtonExists() {
-        SelenideElement calculateButton = $("button:contains('Рассчитать'), a:contains('Рассчитайте лизинг'), .calc-btn");
-        calculateButton.shouldBe(visible);
     }
 
     @Step("Проверить ссылку на Дзен")
@@ -107,83 +91,6 @@ public class MainPage {
         assertThat(href).as("Проверка ссылки на Одноклассники").isNotNull().contains("ok.ru");
     }
 
-    @Step("Скролл к блоку 'Онлайн-сервисы'")
-    public MainPage scrollToOnlineServices() {
-        onlineServicesBlock.scrollTo();
-        sleep(500); // Небольшая задержка для загрузки содержимого
-        return this;
-    }
-
-    @Step("Проверить наличие 5 шагов получения лизинга")
-    public void checkStepsCount(int i) {
-        SelenideElement stepsBlock = $("div:has(div:contains('5 простых шагов'))");
-        stepsBlock.scrollTo();
-        stepsBlock.shouldBe(visible);
-
-        assertThat(stepsBlock.getText()).contains("Заявка");
-        assertThat(stepsBlock.getText()).contains("Подтверждение");
-        assertThat(stepsBlock.getText()).contains("Подготовка");
-        assertThat(stepsBlock.getText()).contains("Одобрение");
-        assertThat(stepsBlock.getText()).contains("Выдача");
-
-    }
-
-    @Step("Проверить ссылку 'Узнать об ЭДО'")
-    public MainPage verifyEdoLearnMoreLink() {
-        learnMoreEdoLink.scrollTo();
-        learnMoreEdoLink.shouldBe(visible);
-
-        String linkText = learnMoreEdoLink.getText();
-        assertThat(linkText)
-                .as("Текст ссылки 'Узнать об ЭДО' должен соответствовать ожидаемому")
-                .isEqualTo("Узнать об ЭДО");
-
-        String href = learnMoreEdoLink.getAttribute("href");
-        assertThat(href)
-                .as("Ссылка 'Узнать об ЭДО' должна вести на портал СберЛизинг")
-                .isEqualTo("https://portal.sberleasing.ru/Authorization/sign-in");
-
-        String target = learnMoreEdoLink.getAttribute("target");
-        assertThat(target)
-                .as("Ссылка должна открываться в новой вкладке")
-                .isEqualTo("_blank");
-
-        return this;
-    }
-
-    @Step("Кликнуть по ссылке 'Узнать об ЭДО' и проверить переход")
-    public void clickEdoLearnMoreLinkAndVerify() {
-        String originalWindow = WebDriverRunner.getWebDriver().getWindowHandle();
-
-        executeJavaScript("arguments[0].click();", learnMoreEdoLink);
-
-        sleep(2000);
-
-        for (String windowHandle : WebDriverRunner.getWebDriver().getWindowHandles()) {
-            if (!windowHandle.equals(originalWindow)) {
-                WebDriverRunner.getWebDriver().switchTo().window(windowHandle);
-                break;
-            }
-        }
-
-        String currentUrl = WebDriverRunner.url();
-        assertThat(currentUrl)
-                .as("После клика должна открыться страница портала СберЛизинг")
-                .isEqualTo("https://portal.sberleasing.ru/Authorization/sign-in");
-
-        WebDriverRunner.getWebDriver().close();
-        WebDriverRunner.getWebDriver().switchTo().window(originalWindow);
-
-    }
-
-    @Step("Проверить открытие страницы ЭДО")
-    public void verifyEdoPageOpened() {
-        switchTo().window(1);
-        String currentUrl = WebDriverRunner.url();
-        assertThat(currentUrl).contains("e-leasing");
-        closeWindow();
-        switchTo().window(0);
-    }
 
     @Step("Проверить, что все ссылки в меню ведут на страницы без ошибок")
     public MainPage verifyMenuLinksAreValid() {
@@ -264,7 +171,7 @@ public class MainPage {
         boolean hasBanners = !banners.isEmpty();
 
         if (!hasBanners) {
-             hasBanners = $("img[src*='banner']").exists() ||
+            hasBanners = $("img[src*='banner']").exists() ||
                     $("div[style*='background']").exists() ||
                     $("section:has(img)").exists();
         }
@@ -311,30 +218,6 @@ public class MainPage {
         assertThat(pageText).containsPattern("\\+?7\\s*\\(?\\d{3}\\)?");
     }
 
-    @Step("Проверить форму заявки")
-    public MainPage verifyApplicationForm() {
-        SelenideElement applicationButton = $("button:contains('Оставить заявку'), a:contains('Заявка')");
-        if (applicationButton.exists()) {
-            applicationButton.scrollTo().click();
-            sleep(1000);
-            SelenideElement form = $("form");
-            form.shouldBe(visible);
-
-            SelenideElement nameField = form.$("input[name*='name' i], input[placeholder*='Имя' i]");
-            SelenideElement phoneField = form.$("input[name*='phone' i], input[placeholder*='Телефон' i]");
-
-            if (nameField.exists()) {
-                nameField.shouldBe(visible);
-            }
-            if (phoneField.exists()) {
-                phoneField.shouldBe(visible);
-            }
-
-            $("body").click();
-            sleep(500);
-        }
-        return this;
-    }
 
     @Step("Проверить время загрузки страницы")
     public MainPage verifyPageLoadTime() {
@@ -362,22 +245,8 @@ public class MainPage {
                     .as("Изображение не имеет источника (src или data-src)")
                     .isNotNull()
                     .isNotEmpty();
-
         }
 
-        return this;
-    }
-
-    @Step("Проверить консоль на наличие ошибок JavaScript")
-    public MainPage verifyNoJavaScriptErrors() {
-        // Получаем консольные логи (работает только с Chrome DevTools)
-        try {
-            Object logs = executeJavaScript("return window.console.errors || []");
-            // В реальном проекте тут нужна интеграция с DevTools
-        } catch (Exception e) {
-            // Логируем, что проверка пропущена
-            System.out.println("Проверка консольных логов пропущена");
-        }
         return this;
     }
 

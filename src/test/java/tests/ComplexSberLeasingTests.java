@@ -7,12 +7,9 @@ import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 
-@Epic("Сайт СберЛизинг - Главная страница")
-@Feature("Комплексные проверки апарметров на главной странице")
 public class ComplexSberLeasingTests extends TestBase {
 
     private final MainPage mainPage = new MainPage();
-
 
     @Test
     @DisplayName("Проверка контактной информации")

@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 
-@Epic("Сайт СберЛизинг - Главная страница")
-@Feature("Точные проверки параметров на главной странице")
 public class SberLeasingTests extends TestBase {
 
     private MainPage mainPage = new MainPage();
