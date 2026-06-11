@@ -7,25 +7,28 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
 import java.util.Map;
+
 import static com.codeborne.selenide.Selenide.open;
 
 
 public class TestBase {
 
-     @BeforeAll
+    @BeforeAll
     static void setUp() {
 
         WebDriverManager.chromedriver().setup();
 
-                SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
                 .screenshots(true)
                 .savePageSource(true)
                 .includeSelenideSteps(true)
         );
 
-        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.baseUrl = System.getProperty("baseUrl");  //https://www.sberleasing.ru
+
+        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.browser = System.getProperty("browser", "chrome");
         Configuration.browserVersion = System.getProperty("browserVersion", "128.0");
 
@@ -38,6 +41,7 @@ public class TestBase {
                 "enableVNC", true,
                 "enableVideo", true
         ));
+
         Configuration.browserCapabilities = capabilities;
         Configuration.remote = "https://" + loginSelenoid + ":" + passwordSelenoid + "@" + urlSelenoid;
 
