@@ -1,10 +1,19 @@
 package tests;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
+
+@Epic("Тестирование главной страницы сайта СберЛизинг")
+@Feature("Комплексная проверка навигации по странице")
+@Story("Проверка наличия блоков и ссылок внутренней навигации")
+@Tag("navigations")
 public class NavigationTests extends TestBase{
 
     private final MainPage mainPage = new MainPage();

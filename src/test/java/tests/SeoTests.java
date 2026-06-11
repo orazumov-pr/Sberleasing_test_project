@@ -1,10 +1,18 @@
 package tests;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.MainPage;
+
+@Epic("Тестирование главной страницы сайта СберЛизинг")
+@Feature("Комплексная проверка данных для SEO-продвижения")
+@Story("Изображения, заголовки, мета-теги")
+@Tag("seo")
 
 public class SeoTests extends TestBase {
 
