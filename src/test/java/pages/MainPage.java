@@ -17,8 +17,6 @@ public class MainPage {
     private final SelenideElement telegramLink = $("a[href*='t.me/sberleasing_official']");
     private final SelenideElement vkLink = $("a[href*='https://vk.com/public190909714']");
     private final SelenideElement okLink = $("a[href*='https://ok.ru/sberleasing']");
-    private final SelenideElement onlineServicesBlock = $x("//h2[contains(text(),'Онлайн-сервисы')]/..");
-    private final SelenideElement learnMoreEdoLink = $("a.sbl-btn[href*='portal.sberleasing.ru']");
     private final SelenideElement innLink = $("a[href*='https://egrul.nalog.ru/index.html']");
     private final SelenideElement header = $("header");
     private final SelenideElement footer = $("footer");
